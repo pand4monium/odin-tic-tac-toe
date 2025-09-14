@@ -9,6 +9,8 @@ function createGameboard (player1="player1", player2="player2") {
 
     let player1Turn = true;
 
+    let inPlay = false;
+
     const changeTurn = () => {
         player1Turn = !player1Turn;
     }
@@ -24,6 +26,15 @@ function createGameboard (player1="player1", player2="player2") {
             }, "")
             return acc1;
         }, "")
+
+        grid.map((row, rowIndex) => {
+            row.forEach((col, colIndex) => {
+                document.getElementById(`${rowIndex}-${colIndex}-input`)
+                    .addEventListener("click", () => {
+                        play(rowIndex, colIndex);
+                    })
+            })
+        })
     }
 
     const play = (row, col) => {
@@ -37,6 +48,7 @@ function createGameboard (player1="player1", player2="player2") {
         }
         console.log(grid.map(row => [...row]));
         generateGrid();
+        inPlay = true;
     }
 
     const checkForWin = (mark) => {
@@ -69,17 +81,11 @@ function createGameboard (player1="player1", player2="player2") {
         enablePlay = false
     }
 
+    generateGrid();
+
 
     return { player1, player2, grid, player1Turn, play};
 }
 
 
 const gameboard = createGameboard();
-console.log(gameboard);
-gameboard.play(0, 0);
-gameboard.play(1, 0);
-gameboard.play(1, 0);
-gameboard.play(1, 1);
-gameboard.play(2, 0);
-gameboard.play(2, 2);
-gameboard.play(0, 2);
