@@ -1,15 +1,15 @@
-function createGameboard (player1="player1", player2="player2") {
-    const grid = [
+function createGameboard () {
+    let player1 = "Player 1";
+    let player2 = "Player 2";
+    let grid = [
         ["", "", ""],
         ["", "", ""],
         ["", "", ""]
     ]
 
-    let enablePlay = true;
+    let inPlay = true;
 
     let player1Turn = true;
-
-    let inPlay = false;
 
     const changeTurn = () => {
         player1Turn = !player1Turn;
@@ -38,10 +38,11 @@ function createGameboard (player1="player1", player2="player2") {
     }
 
     const play = (row, col) => {
-        if (grid[row][col] === "" && enablePlay) {
+        if (grid[row][col] === "" && inPlay) {
             grid[row][col] = player1Turn ? "X" : "O";
             if (checkForWin(player1Turn ? "X" : "O")) {
                 celebrateWin(player1Turn ? player1 : player2)
+                console.log("winnnnn");
             } else {
             changeTurn();
             }
@@ -52,40 +53,67 @@ function createGameboard (player1="player1", player2="player2") {
     }
 
     const checkForWin = (mark) => {
-        grid.forEach(row => {
-            if (row.every(cell => cell === mark)) {
-                return true;
-            }
-        })
+        // check rows
+        for (let row of grid) {
+            if (row.every(cell => cell === mark)) return true;
+        }
 
+        // check columns
         for (let col = 0; col < 3; col++) {
             if (grid[0][col] === mark &&
                 grid[1][col] === mark &&
-                grid[2][col] === mark) {
-                    return true;
-                }
+                grid[2][col] === mark) return true;
         }
 
-        if (grid[0][0] === mark && grid[1][1] === mark && grid[2][2] === mark) {
-            return true;
-        }
-
-        if (grid[2][0] === mark && grid[1][1] === mark && grid[0][2] === mark) {
-            return true;
-        }
+        // check diagonals
+        if (grid[0][0] === mark && grid[1][1] === mark && grid[2][2] === mark) return true;
+        if (grid[2][0] === mark && grid[1][1] === mark && grid[0][2] === mark) return true;
 
         return false;
     }
 
     const celebrateWin = (player) => {
-        enablePlay = false
+        inPlay = false;
+        document.getElementById("game-over").showModal();
+        document.getElementById("game-over-msg").innerText = `
+            ${player} has won!!!
+        `
+
+        document.getElementById("new-game").addEventListener("click", () => {
+            document.getElementById("game-over").close();
+            document.getElementById("settings").showModal();
+        })
     }
 
-    generateGrid();
+    const startGame = () => {
+        grid = [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""],
+        ]
 
+        inPlay = true;
+
+        const player1Name = document.getElementById("player1Name");
+        const player2Name = document.getElementById("player2Name");
+
+        player1 = player1Name.value ? player1Name.value : player1;
+        player2 = player2Name.value ? player2Name.value : player2;
+
+        generateGrid();
+        
+        document.getElementById("settings").close();
+    }
+
+    // modal control
+    document.getElementById("settings").showModal();
+    document.getElementById("start-game").addEventListener("click", () => {
+        startGame();
+    })
 
     return { player1, player2, grid, player1Turn, play};
 }
 
 
 const gameboard = createGameboard();
+

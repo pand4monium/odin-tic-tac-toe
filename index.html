@@ -9,6 +9,30 @@
 <body>
     <div id="ttt-grid"></div>
 
+    <dialog id="settings">
+        <div id="setting-contents">
+        <h1>Settings</h1>
+        <div>
+            <label for="player1Name">Player 1 (X):</label>
+            <input id="player1Name" type="text" />
+        </div>
+        <div>
+            <label for="player2Name">Player 2 (O):</label>
+            <input id="player2Name" type="text" />
+        </div>
+        <button id="start-game">Start Game</button>
+        </div>
+    </dialog>
+
+    <dialog id="game-over">
+        <div>
+            <h1>Game Over</h1>
+            <p id="game-over-msg"></p>
+            <button id="new-game">New Game</button>
+        </div>
+    </dialog>
+
+
     <script src="main.js"></script>
 </body>
 </html>
