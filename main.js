@@ -11,6 +11,8 @@ function createGameboard () {
 
     let player1Turn = true;
 
+    let turnCounter = 0;
+
     const changeTurn = () => {
         player1Turn = !player1Turn;
     }
@@ -46,10 +48,15 @@ function createGameboard () {
             } else {
             changeTurn();
             }
+            turnCounter++;
         }
         console.log(grid.map(row => [...row]));
         generateGrid();
         inPlay = true;
+        console.log(turnCounter);
+        if (turnCounter === 9) {
+            celebrateWin("")
+        }
     }
 
     const checkForWin = (mark) => {
@@ -75,9 +82,7 @@ function createGameboard () {
     const celebrateWin = (player) => {
         inPlay = false;
         document.getElementById("game-over").showModal();
-        document.getElementById("game-over-msg").innerText = `
-            ${player} has won!!!
-        `
+        document.getElementById("game-over-msg").innerText = player ? `${player} has won!!!` : "Game ends in a Draw.";
 
         document.getElementById("new-game").addEventListener("click", () => {
             document.getElementById("game-over").close();
@@ -91,6 +96,10 @@ function createGameboard () {
             ["", "", ""],
             ["", "", ""],
         ]
+
+        turnCounter = 0;
+
+        player1Turn = true;
 
         inPlay = true;
 
